@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "902955720650",
+    "project_id": "anonymousmeetup-b5fb8",
+    "storage_bucket": "anonymousmeetup-b5fb8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902955720650:android:8ac5b55cb5623c78cdb933",
+        "android_client_info": {
+          "package_name": "com.example.anonymousmeetup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0_-evkyv2qMIACMDNYaxDRqaoerNOrW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,72 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function validTimestamp(value) {
+      return value is int || value is float;
+    }
+
+    match /groups/{groupId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.name is string &&
+        request.resource.data.description is string &&
+        request.resource.data.category is string &&
+        request.resource.data.isPrivate is bool &&
+        request.resource.data.groupHash is string &&
+        validTimestamp(request.resource.data.createdAt);
+      allow update: if
+        request.resource.data.name is string &&
+        request.resource.data.description is string &&
+        request.resource.data.category is string &&
+        request.resource.data.isPrivate is bool &&
+        request.resource.data.groupHash is string &&
+        validTimestamp(request.resource.data.createdAt);
+      allow delete: if false;
+    }
+
+    match /group_messages/{messageId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.groupHash is string &&
+        request.resource.data.senderAlias is string &&
+        request.resource.data.ciphertext is string &&
+        request.resource.data.nonce is string &&
+        validTimestamp(request.resource.data.timestamp) &&
+        request.resource.data.ttlSeconds is int &&
+        request.resource.data.version is int;
+      allow update, delete: if false;
+    }
+
+    match /private_messages/{messageId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.chatHash is string &&
+        request.resource.data.ciphertext is string &&
+        request.resource.data.nonce is string &&
+        request.resource.data.type is string &&
+        validTimestamp(request.resource.data.timestamp) &&
+        request.resource.data.ttlSeconds is int &&
+        request.resource.data.version is int;
+      allow update, delete: if false;
+    }
+
+    match /private_handshakes/{handshakeId} {
+      allow read: if true;
+      allow create: if
+        request.resource.data.targetHint is string &&
+        request.resource.data.payload is string &&
+        validTimestamp(request.resource.data.timestamp);
+      allow update, delete: if true;
+    }
+
+    match /hash_pool_stats/{rangeId} {
+      allow read: if true;
+      allow create, update: if
+        request.resource.data.rangeId is string &&
+        request.resource.data.allocatedCount is int &&
+        request.resource.data.messagesCount is int &&
+        validTimestamp(request.resource.data.lastUpdated);
+      allow delete: if false;
+    }
+  }
+}
